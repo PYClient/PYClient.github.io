@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'gvsikl', title: 'Watch One fateful night | Streamable' },
         { id: '1g9v8t', title: 'Watch op phi so nit hep | Streamable' },
         { id: 'pednlg', title: 'Watch pednlg | Streamable' },
-        { id: 'c1zfhp', title: 'Watch Pirates vs. Rockies Highlights | Streamable' },
         { id: 'zn9pod', title: 'Watch pistol pog | Streamable' },
         { id: 'fq5ytc', title: 'Watch Project Startup | Streamable' },
         { id: '4kt7sm', title: 'Watch Replay 2025-07-15 11-43-03 | Streamable' },
