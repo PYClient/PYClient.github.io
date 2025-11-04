@@ -2,7 +2,7 @@
 
 Welcome to the Streamable Video Gallery Showcase, a modern, feature-rich static website designed to demonstrate key front-end development techniques using pure HTML, CSS, and JavaScript. This project serves as a practical example of building a responsive, high-performance, and user-friendly web application without relying on external frameworks.
 
-**[View the Live Demo](https://pyclient.github.io/)**
+**[View the Website Here](https://pyclient.github.io/)**
 
 <!-- Optional: Add a screenshot of your finished site here -->
 <!-- ![Site Preview](link-to-your-screenshot.png) -->
