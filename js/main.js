@@ -69,29 +69,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabContainer = document.querySelector('.tabs');
     const viewToggleContainer = document.getElementById('view-toggle');
     const backToTopButton = document.getElementById('back-to-top');
+    const videoCountElement = document.getElementById('video-count');
+    const colorPicker = document.getElementById('color-picker');
 
-    // --- 1. TAB FUNCTIONALITY ---
+    // --- 1. INITIAL PAGE SETUP ---
+    function initPage() {
+        // Set total video count
+        if (videoCountElement) {
+            videoCountElement.textContent = `${videos.length} Videos`;
+        }
+        // Initialize all features
+        initTabs();
+        populateGallery();
+        initViewToggle();
+        initBackToTop();
+        initColorPicker();
+        // Add event listeners
+        if (searchInput) searchInput.addEventListener('input', handleSearch);
+        if (themeToggle) themeToggle.addEventListener('click', handleThemeToggle);
+    }
+
+    // --- 2. THEME & COLOR CUSTOMIZATION ---
+    function handleThemeToggle() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    }
+
+    function initColorPicker() {
+        const savedColor = localStorage.getItem('themeColor');
+        const defaultColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim();
+
+        const currentColor = savedColor || defaultColor;
+        colorPicker.value = currentColor;
+
+        colorPicker.addEventListener('input', (e) => {
+            const newColor = e.target.value;
+            document.documentElement.style.setProperty('--accent-color', newColor);
+            localStorage.setItem('themeColor', newColor);
+        });
+    }
+
+    // --- 3. TAB FUNCTIONALITY ---
     function initTabs() {
         tabContainer.addEventListener('click', (e) => {
             if (e.target.matches('.tab-button')) {
                 const targetTab = e.target.dataset.tab;
-
-                // Update button states
                 tabContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
                 e.target.classList.add('active');
-
-                // Update content visibility
                 document.querySelectorAll('.tab-content').forEach(content => {
                     content.classList.remove('active');
-                    if (content.id === targetTab) {
-                        content.classList.add('active');
-                    }
+                    if (content.id === targetTab) content.classList.add('active');
                 });
             }
         });
     }
 
-    // --- 2. GALLERY POPULATION & LAZY LOAD ---
+    // --- 4. GALLERY & VIDEO HANDLING ---
     function populateGallery() {
         if (!gallery) return;
         const fragment = document.createDocumentFragment();
@@ -111,10 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
         initLazyLoad();
     }
 
-    // --- 3. SPEED / PERSISTENCE: LAZY LOADING ---
-    // This is the most effective client-side optimization for a static site with many iframes.
-    // It avoids loading all 98 videos at once, drastically improving initial page speed.
-    // The browser's native caching will handle persistence for recently viewed videos.
     function initLazyLoad() {
         const lazyVideos = document.querySelectorAll('.video-embed-placeholder[data-src]');
         const observer = new IntersectionObserver((entries, observer) => {
@@ -133,43 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
         lazyVideos.forEach(video => observer.observe(video));
     }
 
-    // --- 4. GALLERY VIEW MODE TOGGLE ---
-    function initViewToggle() {
-        if (!viewToggleContainer) return;
-        viewToggleContainer.addEventListener('click', (e) => {
-            const button = e.target.closest('.view-button');
-            if (button) {
-                const view = button.dataset.view;
-                
-                // Update button active state
-                viewToggleContainer.querySelectorAll('.view-button').forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                
-                // Update gallery class
-                gallery.classList.remove('view-compact', 'view-large');
-                if (view === 'compact' || view === 'large') {
-                    gallery.classList.add(`view-${view}`);
-                }
-            }
-        });
-    }
-
-    // --- 5. BACK TO TOP BUTTON ---
-    function initBackToTop() {
-        if (!backToTopButton) return;
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                backToTopButton.classList.add('show');
-            } else {
-                backToTopButton.classList.remove('show');
-            }
-        });
-        backToTopButton.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    }
-
-    // --- 6. SEARCH & THEME ---
     function handleSearch() {
         const searchTerm = searchInput.value.toLowerCase();
         const videoCards = gallery.querySelectorAll('.video-card');
@@ -186,18 +180,33 @@ document.addEventListener('DOMContentLoaded', () => {
         noResults.style.display = visibleCount === 0 ? 'block' : 'none';
     }
 
-    function handleThemeToggle() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+    // --- 5. UI CONTROLS ---
+    function initViewToggle() {
+        if (!viewToggleContainer) return;
+        viewToggleContainer.addEventListener('click', (e) => {
+            const button = e.target.closest('.view-button');
+            if (button) {
+                const view = button.dataset.view;
+                viewToggleContainer.querySelectorAll('.view-button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                gallery.classList.remove('view-compact', 'view-large');
+                if (view === 'compact' || view === 'large') {
+                    gallery.classList.add(`view-${view}`);
+                }
+            }
+        });
     }
 
-    // --- INITIALIZATION ---
-    initTabs();
-    populateGallery();
-    initViewToggle();
-    initBackToTop();
-    if (searchInput) searchInput.addEventListener('input', handleSearch);
-    if (themeToggle) themeToggle.addEventListener('click', handleThemeToggle);
+    function initBackToTop() {
+        if (!backToTopButton) return;
+        window.addEventListener('scroll', () => {
+            backToTopButton.classList.toggle('show', window.scrollY > 300);
+        });
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // --- START THE APP ---
+    initPage();
 });
