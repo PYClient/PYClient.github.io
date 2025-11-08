@@ -24,7 +24,7 @@
         <div class="container">
             <h1>My Showcase</h1>
             <div class="header-controls">
-                <div class="color-controls-wrapper" id="color-controls-wrapper">
+                <div class="color-picker-container" id="color-picker-container">
                     <label for="color-picker" class="visually-hidden">Theme Color</label>
                     <input type="color" id="color-picker" value="#00aaff">
                     <button id="reset-color-btn" class="color-reset-button" aria-label="Reset to default color">
@@ -83,11 +83,39 @@
             </div>
 
             <div id="projects-tab" class="tab-content">
-                <div class="placeholder-content"><h3>Work in Progress</h3><p>This section is coming soon — nothing here yet!</p></div>
+                <div class="projects-container">
+                    <button class="project-button" id="return-to-gallery-btn">
+                        <span>Return to Gallery</span>
+                    </button>
+                    <button class="project-button placeholder">
+                        <span>Future Project</span>
+                    </button>
+                    <button class="project-button placeholder">
+                        <span>Another Project</span>
+                    </button>
+                </div>
             </div>
 
             <div id="about-tab" class="tab-content">
-                <div class="placeholder-content"><h3>Work in Progress</h3><p>This section is coming soon — nothing here yet!</p></div>
+                <div class="about-container">
+                    <div class="about-header">
+                        <h2>About PYClient</h2>
+                        <p class="about-subtitle">Creative Python Developer & Tool-Maker</p>
+                    </div>
+                    <hr class="about-divider">
+                    <div class="about-section">
+                        <h3>My Passion</h3>
+                        <p>I enjoy coding fun, creative, and helpful Python scripts, tools, and random projects. From simple utilities to more complex applications, my goal is to build things that are both functional and enjoyable to use.</p>
+                    </div>
+                    <div class="about-section">
+                        <h3>Get Involved</h3>
+                        <p>I'm always open to suggestions from others for what to build next. If you have an idea for a cool script, a useful tool, or just a fun project, feel free to share it!</p>
+                    </div>
+                    <div class="about-section">
+                        <h3>A Note to Visitors</h3>
+                        <p>Thank you for stopping by. I hope you enjoy exploring my projects and find them useful or at least a little bit entertaining. This space is a reflection of my journey in coding, and I'm excited to share it with you.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
